@@ -12,6 +12,6 @@ namespace ResumeApp.Data.Models
         public string? Mobile { get; set; }
         public string? Degree { get; set; }
         public string?  CV { get; set; }
-        public DateTime? CreationTime { get; set; } = DateTime.Now;
+        public DateTime? CreationTime { get; set; }
     }
 }

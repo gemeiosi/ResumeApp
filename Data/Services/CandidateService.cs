@@ -13,33 +13,61 @@ namespace ResumeApp.Data.Services
         {
             _context = context;
         }
-        public void AddCandidate(Candidate newCandidate)
+        public async Task<bool> AddCandidate(Candidate newCandidate)
         {
-            Console.WriteLine(newCandidate.Id);
             _context.candidate.Add(newCandidate);
-            _context.Entry(newCandidate).State = EntityState.Added;
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public void DeleteCandidate(int id)
+        public async Task<bool> DeleteCandidate(int id)
         {
-            throw new System.NotImplementedException();
+            var candidate = await _context.candidate.FindAsync(id);
+            if (candidate == null)
+            {
+                return false;
+            }
+
+            _context.candidate.Remove(candidate);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<Candidate>> GetAllCandidates()
         {
-            var results = new List<Candidate>();
             return await _context.candidate.ToListAsync();
         }
 
-        public Candidate GetCandidateById(int id)
+        public async Task<Candidate> GetCandidateById(int id)
         {
-            throw new System.NotImplementedException();
+            return await _context.candidate.FindAsync(id);
         }
 
-        public void UpdateCandidate(int id, Candidate newCandidate)
+        public async Task<bool> UpdateCandidate(int id, Candidate newCandidate)
         {
-            throw new System.NotImplementedException();
+            _context.Entry(newCandidate).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CandidateExists(id))
+                {
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return true;
+        }
+
+        private bool CandidateExists(int id)
+        {
+            return _context.candidate.Any(e => e.Id == id);
         }
     }
 }

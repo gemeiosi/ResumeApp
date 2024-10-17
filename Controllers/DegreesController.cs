@@ -70,8 +70,12 @@ namespace ResumeApp.Controllers
         public async Task<ActionResult<DegreeDto>> PostDegree(DegreeDto degree)
         {
             var entity = _mapper.Map<Degree>(degree);
-            await _service.AddDegree(entity);
-            return Ok(entity);
+            var success = await _service.AddDegree(entity);
+            if (!success)
+            {
+                return BadRequest("Degree Exists");
+            }
+            return Ok(degree);
         }
 
         // DELETE: api/Degrees/5

@@ -31,7 +31,15 @@ namespace ResumeApp.Data.Services
         }
         public async Task<bool> AddDegree(Degree newDegree)
         {
-            _context.degree.Add(newDegree);
+            var degree = await _context.degree.Where(x=>x.Name.ToUpper() == newDegree.Name.ToUpper()).FirstOrDefaultAsync();
+            if (degree == null)
+            {
+                _context.degree.Add(newDegree);
+            }
+            else
+            {
+                return false;
+            }
             await _context.SaveChangesAsync();
             return true;
         }

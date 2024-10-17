@@ -13,6 +13,6 @@ namespace ResumeApp.Data.Dtos
         public string? Mobile { get; set; }
         public string? Degree { get; set; }
         public string?  CV { get; set; }
-        public DateTime? CreationTime { get; set; }
+        public DateTime? CreationTime { get; set; } = DateTime.Now;
     }
 }

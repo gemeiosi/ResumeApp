@@ -5,9 +5,9 @@ namespace ResumeApp.Data.Interfaces
     public interface ICandidateService
     {
         Task<List<Candidate>> GetAllCandidates();
-        Candidate GetCandidateById(int id);
-        void UpdateCandidate(int id, Candidate candidate);
-        void DeleteCandidate(int id);
-        void AddCandidate(Candidate newCandidate);
+        Task<Candidate> GetCandidateById(int id);
+        Task<bool> UpdateCandidate(int id, Candidate candidate);
+        Task<bool> DeleteCandidate(int id);
+        Task<bool> AddCandidate(Candidate newCandidate);
     }
 }
