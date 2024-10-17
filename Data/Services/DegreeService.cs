@@ -76,7 +76,7 @@ namespace ResumeApp.Data.Services
 
         public async Task<Degree> GetDegreeById(int id)
         {
-            return await _context.degree.Where(x=>x.Id == id).FirstOrDefaultAsync();
+            return await _context.degree.FindAsync(id);
         }
 
         public async Task<bool> UpdateDegree(int id, Degree newDegree)

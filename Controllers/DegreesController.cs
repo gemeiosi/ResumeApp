@@ -17,13 +17,11 @@ namespace ResumeApp.Controllers
     [ApiController]
     public class DegreesController : ControllerBase
     {
-        private readonly AppDBContext _context;
         private readonly IDegreeService _service;
         private readonly IMapper _mapper;
 
-        public DegreesController(AppDBContext context, IDegreeService service, IMapper mapper)
+        public DegreesController(IDegreeService service, IMapper mapper)
         {
-            _context = context;
             _service = service;
             _mapper = mapper;
         }
@@ -34,20 +32,19 @@ namespace ResumeApp.Controllers
         {
             var allDegrees = await _service.GetAllDegrees();
             return Ok(allDegrees);
-            //return await _context.Degree.ToListAsync();
         }
 
         // GET: api/Degrees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DegreeDto>> GetDegree(int id)
         {
-            var Degree = await _context.degree.FindAsync(id);
-            DegreeDto response = _mapper.Map<DegreeDto>(Degree);
-
-            if (Degree == null)
+            var degree = await _service.GetDegreeById(id);
+            
+            if (degree == null)
             {
                 return NotFound();
             }
+            DegreeDto response = _mapper.Map<DegreeDto>(degree);
 
             return response;
         }
@@ -55,13 +52,13 @@ namespace ResumeApp.Controllers
         // PUT: api/Degrees/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDegree(int id, DegreeDto Degree)
+        public async Task<IActionResult> PutDegree(int id, DegreeDto degree)
         {
-            if (id != Degree.Id)
+            if (id != degree.Id)
             {
                 return BadRequest();
             }
-            var entity = _mapper.Map<Degree>(Degree);
+            var entity = _mapper.Map<Degree>(degree);
             await _service.UpdateDegree(entity.Id, entity);
 
             return NoContent();
@@ -70,11 +67,11 @@ namespace ResumeApp.Controllers
         // POST: api/Degrees
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DegreeDto>> PostDegree(DegreeDto Degree)
+        public async Task<ActionResult<DegreeDto>> PostDegree(DegreeDto degree)
         {
-            var entity = _mapper.Map<Degree>(Degree);
+            var entity = _mapper.Map<Degree>(degree);
             await _service.AddDegree(entity);
-            return Ok(Degree);
+            return Ok(entity);
         }
 
         // DELETE: api/Degrees/5
