@@ -12,16 +12,60 @@ namespace ResumeApp.Data.Services
         public DegreeService(AppDBContext context)
         {
             _context = context;
+            OnInit();
         }
-        public void AddDegree(Degree newDegree)
+        void OnInit()
+        {
+            if (!_context.degree.Any())
+            {
+                var degrees = new List<Degree>
+                {
+                    new Degree { Name = "Bsc" },
+                    new Degree { Name = "Msc" },
+                    new Degree { Name = "PhD" }
+
+                };
+                _context.AddRange(degrees);
+                _context.SaveChanges();
+            }
+        }
+        public async Task<bool> AddDegree(Degree newDegree)
         {
             _context.degree.Add(newDegree);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public void DeleteDegree(int id)
+        public async Task<bool> DeleteDegree(int id)
         {
-            throw new System.NotImplementedException();
+            var degree = await _context.degree.FindAsync(id);
+            if (degree == null)
+            {
+                return false;
+            }
+
+            _context.degree.Remove(degree);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAllUnusedDegrees()
+        {
+            var candidates = await _context.candidate.Select(x=> x.Degree).ToListAsync();
+            var degreesDb = await _context.degree.ToListAsync();
+            var degrees = degreesDb.Select(x=>x.Name).Except(candidates).ToList();
+            List<Degree> degreesDbTodDelete = new List<Degree>();
+            foreach (var degree in degrees)
+            {
+                degreesDbTodDelete.Add(degreesDb.Where(x => x.Name == degree).FirstOrDefault());
+            }
+            if (degreesDbTodDelete == null)
+            {
+                return false;
+            }
+            _context.degree.RemoveRange(degreesDbTodDelete);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<List<Degree>> GetAllDegrees()
@@ -30,14 +74,36 @@ namespace ResumeApp.Data.Services
             return await _context.degree.ToListAsync();
         }
 
-        public Degree GetDegreeById(int id)
+        public async Task<Degree> GetDegreeById(int id)
         {
-            throw new System.NotImplementedException();
+            return await _context.degree.Where(x=>x.Id == id).FirstOrDefaultAsync();
         }
 
-        public void UpdateDegree(int id, Degree newDegree)
+        public async Task<bool> UpdateDegree(int id, Degree newDegree)
         {
-            throw new System.NotImplementedException();
+
+            _context.Entry(newDegree).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!DegreeExists(id))
+                {
+                    return false;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return true;
+        }
+        private bool DegreeExists(int id)
+        {
+            return _context.degree.Any(e => e.Id == id);
         }
     }
 }
