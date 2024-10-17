@@ -1,0 +1,15 @@
+<div class="add-degree">
+    <form [formGroup]="addDegreeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name" class="required">Name</label>
+            <input formControlName="name" type="text" class="form-control" id="name" placeholder="Name">
+        </div>
+        <!-- error block -->
+        <div class="alert alert-danger" *ngIf="isSubmitted && addDegreeForm.controls['name'].hasError('required')">Please provide a Name</div>
+        <!--green button with class btn-success-->
+        <button class="btn btn-success" type="submit">Add</button>
+        <!--routerLink to redirect the user to all books--> 
+        <button class="btn btn-default" [routerLink]="['/degrees']">Cancel</button> 
+        
+    </form>
+</div>

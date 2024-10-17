@@ -1,0 +1,21 @@
+<h1 id="tableLabel">Degrees</h1>
+
+<p *ngIf="!degrees"><em>Loading...</em></p>
+<a class="btn btn-success" [routerLink]="['/new-degree']">Add Degree</a>
+<a class="btn btn-warning" (click)="deleteAllDegrees()">Delete All Unused Degrees</a>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="degrees">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Creation Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let degree of degrees">
+      <td>{{ degree.name }}</td>
+      <td>{{ degree.creationTime }}</td>
+      <button [routerLink]="['/update-degree', degree.id]" class="btn btn-info">Update</button>
+      <button (click)="deleteDegree(degree.id)" class="btn btn-danger">Delete</button>
+    </tr>
+  </tbody>
+</table>
