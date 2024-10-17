@@ -26,7 +26,6 @@ export class UpdateDegreeComponent implements OnInit{
 
   ngOnInit() {
 	this.service.getDegreeById(this.route.snapshot.params.id).subscribe(data => {
-    console.log(data);
 	  this.degree = data;
 
 	  // construct the formGroup

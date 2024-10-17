@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { DegreeService } from "src/app/services/degree.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-new-degree',
@@ -38,6 +39,9 @@ export class NewDegreeComponent {
     } else {
       this.degreeService.addDegree(this.addDegreeForm.value).subscribe(data => {
         this.router.navigate(["/degrees"]);  // the router service is injected to the constructor.
+      },
+      (error: HttpErrorResponse)=>{
+        alert(error.error);
       });
     }
     }

@@ -12,6 +12,7 @@ import { NewDegreeComponent } from './new-degree/new-degree.component';
 import { DeleteDegreeComponent } from './delete-degree/delete-degree.component';
 import { DegreesComponent } from './degrees/degrees.component';
 import { UpdateDegreeComponent } from './update-degree/update-degree.component';
+import { UpdateCandidateComponent } from './update-candidate/update-candidate.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { UpdateDegreeComponent } from './update-degree/update-degree.component';
     DeleteDegreeComponent,
     DegreesComponent,
     UpdateDegreeComponent,
+    UpdateCandidateComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,6 +35,7 @@ import { UpdateDegreeComponent } from './update-degree/update-degree.component';
       { path: "", component: CandidatesComponent },
       { path: "candidates", component: CandidatesComponent },
       { path: "new-candidate", component: NewCandidateComponent },
+      { path: "update-candidate/:id", component: UpdateCandidateComponent },
       { path: "degrees", component: DegreesComponent },
       { path: "new-degree", component: NewDegreeComponent },
       { path: "update-degree/:id", component: UpdateDegreeComponent },

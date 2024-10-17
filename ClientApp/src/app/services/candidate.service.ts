@@ -22,8 +22,20 @@
 	{
 		return this.http.post(this._baseURL+"/candidates", candidate);
 	}
+	getCandidateById(id: number) {
+		return this.http.get<Candidate>(this._baseURL + "/candidates/" + id);
+	  }
+	
+	updateCandidate(candidate: Candidate) {
+	return this.http.put(this._baseURL + "/candidates/" + candidate.id, candidate);
+	}
+
+	deleteCandidate(id: number) {
+	return this.http.delete(this._baseURL + "/candidates/" + id);
+	}
  }
  interface Candidate {
+	id: number;
     firstName: string;
     lastName: string;
     email: string;

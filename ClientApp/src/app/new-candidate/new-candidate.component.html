@@ -1,0 +1,45 @@
+<div class="add-candidate">
+    <form [formGroup]="addCandidateForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="firstName" class="required">FirstName</label>
+            <input formControlName="firstName" type="text" class="form-control" id="firstName" placeholder="FirstName">
+        </div>
+        <!-- error block -->
+        <div class="alert alert-danger" *ngIf="isSubmitted && addCandidateForm.controls['firstName'].hasError('required')">Please provide your First Name</div>
+        <div class="form-group">
+            <label for="lastName" class="required">LastName</label>
+            <input formControlName="lastName" type="text" class="form-control" id="lastName" placeholder="LastName">
+        </div>
+        <div class="alert alert-danger" *ngIf="isSubmitted && addCandidateForm.controls['lastName'].hasError('required')">Please provide your Last Name</div>
+        <div class="form-group">
+            <label for="email" class="required">Email</label>
+            <input formControlName="email" type="email" class="form-control" id="email" placeholder="Email">
+        </div>
+        <!-- error block -->
+        <div class="alert alert-danger" *ngIf="isSubmitted && addCandidateForm.controls['email'].hasError('email')">Provide a valid email.</div>
+        <div class="alert alert-danger" *ngIf="isSubmitted && addCandidateForm.controls['email'].hasError('required')">Please provide an email address</div>
+        <div class="form-group">
+            <label for="mobile">Mobile</label>
+            <input formControlName="mobile" type="text" class="form-control" id="mobile" placeholder="Mobile">
+        </div>
+        <!-- error block -->
+        <div class="alert alert-danger" *ngIf="isSubmitted && addCandidateForm.controls['mobile'].hasError('minlength')">Provide a valid mobile with 10 digits.</div>
+        <div class="alert alert-danger" *ngIf="isSubmitted && addCandidateForm.controls['mobile'].hasError('maxlength')">Provide a valid mobile with 10 digits.</div>
+        <div class="form-group">
+        <label for="degree">Degree</label>
+        <select class="form-select" formControlName="degree">
+            <option value="">Choose your degree</option>
+            <option *ngFor="let degree of degrees" [ngValue]="degree">{{degree}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+            <label for="cv">CV</label>
+            <input formControlName="cv" placeholder="cv" type="file" class="form-control" class="file-upload" onchange="console.log(event.target.files)">
+        </div>
+        <!--green button with class btn-success-->
+        <button class="btn btn-success" type="submit">Add</button>
+        <!--routerLink to redirect the user to all books--> 
+        <button class="btn btn-default" [routerLink]="['/candidates']">Cancel</button> 
+  
+    </form>
+    </div>
