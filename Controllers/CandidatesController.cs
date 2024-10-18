@@ -70,8 +70,11 @@ namespace ResumeApp.Controllers
         public async Task<ActionResult<CandidateDto>> PostCandidate(CandidateDto candidate)
         {
             var entity = _mapper.Map<Candidate>(candidate);
-            await _service.AddCandidate(entity);
-
+            var success = await _service.AddCandidate(entity);
+            if (!success)
+            {
+                return BadRequest("Candidate Exists");
+            }
             return Ok(candidate);
         }
 

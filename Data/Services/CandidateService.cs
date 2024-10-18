@@ -15,7 +15,15 @@ namespace ResumeApp.Data.Services
         }
         public async Task<bool> AddCandidate(Candidate newCandidate)
         {
-            _context.candidate.Add(newCandidate);
+            var candidate = await _context.candidate.Where(x => x.Email == newCandidate.Email || x.Mobile == newCandidate.Mobile).FirstOrDefaultAsync();
+            if (candidate == null)
+            {
+                _context.candidate.Add(newCandidate);
+            }
+            else
+            {
+                return false;
+            }
             await _context.SaveChangesAsync();
             return true;
         }
