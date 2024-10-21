@@ -18,13 +18,13 @@ export class DegreesComponent implements OnInit {
   deleteDegree(id: number) {
     alert("Are you sure?");
     this.service.deleteDegree(id).subscribe(data => {
-      this.router.navigate(["/degrees"]);
+      window.location.reload();
     });
   }
   deleteAllDegrees() {
     alert("Are you sure?");
     this.service.deleteAllDegrees().subscribe(data => {
-      this.router.navigate(["/degrees"]);
+      window.location.reload();
     });
   }
   ngOnInit() {		
