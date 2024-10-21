@@ -18,7 +18,7 @@ export class CandidatesComponent implements OnInit {
   deleteCandidate(id: number) {
     alert("Are you sure?");
     this.service.deleteCandidate(id).subscribe(data => {
-      this.router.navigate(["/candidates"]);
+      window.location.reload();
     });
   }
   ngOnInit() {		
